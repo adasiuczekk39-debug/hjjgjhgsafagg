@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "chestbot",
+  "version": "${version}",
+  "name": "ChestBot",
+  "description": "Auto-zbieranie skrzynek, auto /sell all, powrot na /spawn przed koncem ochrony + Chest ESP + GUI.",
+  "authors": ["you"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["pl.chestbot.ChestBotMod"]
+  },
+  "mixins": ["chestbot.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
