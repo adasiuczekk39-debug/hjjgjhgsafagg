@@ -1,0 +1,30 @@
+name: build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Uloz pliki w strukture projektu
+        run: |
+          set -e
+          mkdir -p proj/src/main/java/pl/chestbot/gui proj/src/main/java/pl/chestbot/mixin proj/src/main/resources/assets/chestbot/lang
+          cp build.gradle gradle.properties settings.gradle proj/
+          for f in Bot ChestBotMod ChestEsp ChestScanner Config Hud Hwid License Pathfinder; do cp $f.java proj/src/main/java/pl/chestbot/; done
+          for f in ConfigScreen FlatButton FlatSlider LicenseScreen; do cp $f.java proj/src/main/java/pl/chestbot/gui/; done
+          cp InGameHudMixin.java proj/src/main/java/pl/chestbot/mixin/
+          cp fabric.mod.json chestbot.mixins.json proj/src/main/resources/
+          cp en_us.json pl_pl.json proj/src/main/resources/assets/chestbot/lang/
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.8
+      - run: gradle build
+        working-directory: proj
+      - uses: actions/upload-artifact@v4
+        with:
+          name: chestbot-jar
+          path: proj/build/libs/chestbot-1.0.0.jar
